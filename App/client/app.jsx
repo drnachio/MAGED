@@ -33,7 +33,8 @@ Sheet = React.createClass({
         let res = '';
         res += '_id: ' + this.props.sheet._id + ' | ';
         res += 'dynamic: ' + this.props.sheet.dynamic + ' | ';
-        res += 'height: ' + this.props.sheet.height;
+        res += 'height: ' + this.props.sheet.height + ' | ';
+        res += '_class: ' + this.props.sheet._class;
         return res;
     },
 

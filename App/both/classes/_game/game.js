@@ -54,32 +54,6 @@ if(Meteor.isClient) {
         return res;
     };
 
-    let generateData = function(times, timeout, count) {
-        setTimeout(function(){
-            for(let i = 0; i < 100; i++){
-                let cell = MAGED.Classes.Cell.createNewObject({_x: Math.round(Math.random()*100), _y:Math.round(Math.random()*100),_z:Math.round(Math.random()*100),_h:Math.round(Math.random()*100),_stack:[]});
-                for(let j = 0; j < 5; j++) {
-                    let sheet = MAGED.Classes.Sheet.createNewObject({dynamic: Math.random() > 0.5, height: Math.round(Math.random()*10)});
-                    cell.addSheet(sheet._id);
-                }
-            }
-            if(count < times){
-                count++;
-                generateData(times, timeout, count);
-            }
-            else{
-                return;
-            }
-        }, timeout);
-    };
-    MAGED.Classes.Game.instancesStressTest = function(times){
-        let startTime = new Date();
-        console.log(startTime);
-        generateData(times, 5000, 0);
-        let msEnd = new Date() - startTime;
-        console.log('END: ' + msEnd + ' ms');
-    };
-
     MAGED.Classes.Game.loadAllCellsInMemory = function(){
         MAGED.Collections.Cells.find({}).forEach(function(obj){
             MAGED.Classes.Game.addGameObject(obj);
