@@ -19,7 +19,7 @@ App = React.createClass({
 },
 
 render() {
-    return (
+    return (<div></div>)/*
         <div className="container">
         <header>
         <h1>Reacting to MAGED</h1>
@@ -29,6 +29,6 @@ render() {
         {this.renderTasks()}
     </ul>
     </div>
-);
+);*/
 }
 });

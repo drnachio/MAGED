@@ -9,5 +9,6 @@ if (Meteor.isClient) {
 
         var mapView = new MAGED.Classes.MapView();
         mapView.start();
+        mapView.showStats();
     });
 }
