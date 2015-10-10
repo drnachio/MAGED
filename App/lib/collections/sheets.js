@@ -1,9 +1,9 @@
 /**
  * Created by Marcos on 10/10/2015.
  */
-MAGED.Collections.Cells = new Mongo.Collection('cells');
+MAGED.Collections.Sheets = new Mongo.Collection('sheets');
 
-MAGED.Collections.Cells.allow({
+MAGED.Collections.Sheets.allow({
     insert: function(){
         return true;
     },

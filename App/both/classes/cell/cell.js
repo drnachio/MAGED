@@ -4,21 +4,24 @@
 MAGED.Classes.Cell = class Cell extends MAGED.Classes.GameObject {
 
     static get _collection(){
-        return Cells;
+        return MAGED.Collections.Cells;
     };
 
-    static udpate(conditionObj, updateProps, options){
+    static update(conditionObj, updateProps, options){
         return Cell._collection.update(conditionObj, updateProps, options);
     };
 
-    static createNewCell(properties){
+    static createNewObject(properties){
         properties['_class'] = 'Cell';
+        properties['_table'] = 'Cells';
         let newCellId = Cell._collection.insert(properties);
+        super.createNewObject(newCellId, properties._class, properties._table);
         return new Cell(Cell._collection.findOne({_id: newCellId}));
     };
 
-    static removeCell(cellId){
-        return Cell._collection.remove(cellId);
+    static removeObject(objId){
+        super.removeObject(objId);
+        return Cell._collection.remove(objId);
     };
 
     constructor(obj){

@@ -4,20 +4,23 @@
 MAGED.Classes.Sheet = class Sheet extends MAGED.Classes.GameObject {
 
     static get _collection(){
-        return Sheets;
+        return MAGED.Collections.Sheets;
     };
 
-    static udpate(conditionObj, updateProps, options){
+    static update(conditionObj, updateProps, options){
         return Sheet._collection.update(conditionObj, updateProps, options);
     };
 
-    static createNewSheet(properties){
+    static createNewObject(properties){
         properties['_class'] = 'Sheet';
+        properties['_table'] = 'Sheets';
         let newSheetId = Sheet._collection.insert(properties);
+        super.createNewObject(newSheetId, properties._class, properties._table);
         return new Sheet(Sheet._collection.findOne({_id: newSheetId}));
     };
 
-    static removeSheet(sheetId){
+    static removeObject(sheetId){
+        super.removeObject(sheetId);
         return Sheet._collection.remove(sheetId);
     };
 

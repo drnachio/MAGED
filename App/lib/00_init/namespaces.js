@@ -4,3 +4,4 @@
 //MAGE NAMESPACE
 MAGED = {};
 MAGED.Classes = MAGED.Classes || {};
+MAGED.Collections = MAGED.Collections || {};
