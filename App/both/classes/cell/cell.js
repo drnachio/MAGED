@@ -1,27 +1,24 @@
 /**
  * Created by Marcos on 10/10/2015.
  */
-
-import GameObject from '../game_object';
-import Game from '../game';
-
-export default class Cell extends GameObject {
+MAGED.Classes.Cell = class Cell extends MAGED.Classes.GameObject {
 
     static get _collection(){
         return Cells;
     };
 
     static udpate(conditionObj, updateProps, options){
-        Cell._collection.update(conditionObj, updateProps, options);
+        return Cell._collection.update(conditionObj, updateProps, options);
     };
 
     static createNewCell(properties){
         properties['_class'] = 'Cell';
-        Cell._collection.insert(properties);
+        let newCellId = Cell._collection.insert(properties);
+        return new Cell(Cell._collection.findOne({_id: newCellId}));
     };
 
     static removeCell(cellId){
-        Cell._collection.remove(cellId);
+        return Cell._collection.remove(cellId);
     };
 
     constructor(obj){
@@ -43,7 +40,7 @@ export default class Cell extends GameObject {
     get stack(){
         let stackGameObjArray = [];
         for(let i = 0; i < this._stack.length; i++){
-            stackGameObjArray.push(Game.getGameObjectByID(this._stack[i]));
+            stackGameObjArray.push(MAGED.Classes.Game.getGameObjectByID(this._stack[i]));
         }
         return stackGameObjArray;
     };
