@@ -1,7 +1,11 @@
 /**
  * Created by Marcos on 10/10/2015.
  */
-MAGED.Classes.Cell = class Cell extends GameObject {
+
+import GameObject from '../game_object';
+import Game from '../game';
+
+export default class Cell extends GameObject {
 
     static get _collection(){
         return Cells;
@@ -39,7 +43,7 @@ MAGED.Classes.Cell = class Cell extends GameObject {
     get stack(){
         let stackGameObjArray = [];
         for(let i = 0; i < this._stack.length; i++){
-            stackGameObjArray.push(MAGED.Classes.Game.getGameObjectByID(this._stack[i]));
+            stackGameObjArray.push(Game.getGameObjectByID(this._stack[i]));
         }
         return stackGameObjArray;
     };

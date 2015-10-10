@@ -67,6 +67,7 @@ templating-tools@1.0.0
 tracker@1.0.9
 ui@1.0.8
 underscore@1.0.4
+universe:modules@0.5.0
 url@1.0.5
 webapp@1.2.2
 webapp-hashing@1.0.5

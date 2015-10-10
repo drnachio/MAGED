@@ -2,7 +2,7 @@
  * Created by Marcos on 10/10/2015.
  */
 
-MAGED.Classes.GameObject = class GameObject {
+export default class GameObject {
 
     static get _collection(){
         return null;
