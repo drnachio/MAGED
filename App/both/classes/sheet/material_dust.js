@@ -28,7 +28,7 @@ MAGED.Classes.Dust = class Dust extends MAGED.Classes.Material {
         if(!mult){
             mult = 1;
         }
-        return MAGED.Constants.RARITY.COMMON * mult;
+        return MAGED.Constants.RARITY.REGULAR * mult;
     };
 
     constructor(obj){

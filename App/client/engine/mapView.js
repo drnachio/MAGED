@@ -41,7 +41,8 @@ MAGED.Classes.MapView = class MapView {
             var cell = new MAGED.Classes.Cell(c);
 
             var stack = cell.stack;
-            console.log(cell.stack);
+
+            let cellH=0;
             for(var i=0;i<stack.length;i++) {
 
                 let sheet = stack[i];
@@ -61,7 +62,6 @@ MAGED.Classes.MapView = class MapView {
                 mesh.position.x = x * radius * 2;
                 mesh.position.y = y * radius * 1.5;
 
-
                 mesh.setHeight = function (h) {
                     this.geometry = new THREE.ExtrudeGeometry(this._shape, {
                         amount: h,
@@ -71,7 +71,8 @@ MAGED.Classes.MapView = class MapView {
                     });
                 };
                 mesh.h = sheet.h * 10;
-                mesh.position.z = sheet.b * 10;
+                mesh.position.z = cellH * 10;
+                cellH += sheet.h;
                 mesh.setHeight(mesh.h);
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;

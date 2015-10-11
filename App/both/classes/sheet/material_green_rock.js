@@ -28,7 +28,7 @@ MAGED.Classes.GreenRock = class GreenRock extends MAGED.Classes.Material {
         if(!mult){
             mult = 1;
         }
-        return MAGED.Constants.RARITY.INFREQUENT * mult;
+        return MAGED.Constants.RARITY.REGULAR * mult;
     };
 
     constructor(obj){
