@@ -43,9 +43,7 @@ MAGED.Classes.Cell = class Cell extends MAGED.Classes.GameObject {
     get stack(){
         let stackGameObjArray = [];
         for(let i = 0; i < this._stack.length; i++){
-            MAGED.Classes.Game.getGameObjectById(this._stack[i]).then(function(promiseRes){
-                stackGameObjArray.push(promiseRes);
-            });
+            stackGameObjArray.push(new MAGED.Classes.Sheet(MAGED.Collections.Sheets.findOne({_id: this._stack[i]})));
         }
         return stackGameObjArray;
     };
