@@ -41,23 +41,14 @@ Meteor.startup(function () {
     MAGED.Classes.Game.cellsObserver = MAGED.Collections.Cells.find().observeChanges({
         added(id, fields){
             if(MAGED.Collections.Cells.find().count() === MAGED.Classes.Game.TotalCellsInView) {
-                getSheets();
-                MAGED.Classes.Game.cellsObserver.stop();
-                delete MAGED.Classes.Game.cellsObserver;
-            }
-        }
-    });
-    MAGED.Classes.Game.sheetsObserver = MAGED.Collections.Sheets.find().observeChanges({
-        added(id, fields){
-            if(MAGED.Collections.Sheets.find().count() === MAGED.Classes.Game.TotalSheetsInView) {
                 console.log('GO RENDER');
                 console.log((new Date().getTime() - startTime) + 'ms');
-                MAGED.Classes.Game.sheetsObserver.stop();
                 React.render(<App />, document.getElementById("render-target"));
                 var mapView = new MAGED.Classes.MapView();
                 mapView.start();
                 mapView.showStats();
-                delete MAGED.Classes.Game.sheetsObserver;
+                MAGED.Classes.Game.cellsObserver.stop();
+                delete MAGED.Classes.Game.cellsObserver;
             }
         }
     });
@@ -71,7 +62,6 @@ Sheet = React.createClass({
 
     getPropertiesValueToShow() {
         let res = '';
-        res += '_id: ' + this.props.sheet._id + ' | ';
         res += 'dynamic: ' + this.props.sheet.dynamic + ' | ';
         res += 'height: ' + this.props.sheet.height + ' | ';
         res += '_class: ' + this.props.sheet._class;
@@ -102,9 +92,9 @@ Cell = React.createClass({
     },
 
     renderSheets(){
-        return this.props.cell._stack.map((sheetId) => {
-            let sheet = MAGED.Collections.Sheets.findOne({_id:sheetId});
-            return <Sheet key={sheet._id} sheet={sheet} />;
+        return this.props.cell._stack.map((sheet) => {
+            //let sheet = MAGED.Collections.Sheets.findOne({_id:sheetId});
+            return <Sheet sheet={sheet} />;
         });
     },
 

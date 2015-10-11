@@ -27,9 +27,9 @@ MAGED.Classes.Cell = class Cell extends MAGED.Classes.GameObject {
     constructor(obj){
         super(obj);
         this.stack = [];
-        this._stack.forEach(function(obj){
+        this._stack.forEach((function(obj){
             this.stack.push(new MAGED.Classes[obj._class](obj));
-        });
+        }).bind(this));
     };
 
     get x(){ return this._x; };
@@ -44,6 +44,7 @@ MAGED.Classes.Cell = class Cell extends MAGED.Classes.GameObject {
     get h(){ return this._h; };
     set h(val){ Cell.update(this._id, {$set: {_h: val}}); };
 
+    /*
     set stack(val) {
         if(!_.isArray(val)){
             val = [val];
@@ -54,8 +55,8 @@ MAGED.Classes.Cell = class Cell extends MAGED.Classes.GameObject {
                 val[i] = temp._id;
             }
         }
-        Cell.update(this._id, {$set:{_stack: val}});
-    };
+        //Cell.update(this._id, {$set:{_stack: val}});
+    };*/
 
     addSheet(sheets, position){
         if(!_.isArray(sheets)){
