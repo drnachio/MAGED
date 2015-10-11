@@ -60,6 +60,8 @@ MAGED.Classes.MapView = class MapView {
                     mesh._shape = shapes[Math.abs(y % 2)];
                     mesh.position.x = x * radius * 2;
                     mesh.position.y = y * radius * 1.5;
+                    mesh.position.z = sheet.b;
+
                     mesh.setHeight = function (h) {
                         this.geometry = new THREE.ExtrudeGeometry(this._shape, {
                             amount: h,
@@ -68,7 +70,7 @@ MAGED.Classes.MapView = class MapView {
                             bevelEnabled: false
                         });
                     };
-                    mesh.h = cell.h;
+                    mesh.h = sheet.h;
                     mesh.setHeight(mesh.h);
                     mesh.castShadow = true;
                     mesh.receiveShadow = true;
