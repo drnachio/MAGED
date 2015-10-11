@@ -73,11 +73,12 @@ MAGED.Classes.MapView = class MapView {
                 mesh.h = sheet.h * 10;
                 mesh.position.z = cellH * 10;
                 cellH += sheet.h;
+                mesh.sheet = sheet;
                 mesh.setHeight(mesh.h);
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
                 this._scene.add(mesh);
-                mesh.sheet = sheet;
+
             }
         };
 

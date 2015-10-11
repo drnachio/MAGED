@@ -63,7 +63,4 @@ if(Meteor.isClient) {
         return res;
     };
 
-    MAGED.Classes.Game.TotalSheetsInView = null;
-    MAGED.Classes.Game.allCellsLoaded = new ReactiveVar(false);
-    MAGED.Classes.Game.ready = new ReactiveVar(false);
 }

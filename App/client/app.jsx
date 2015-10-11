@@ -30,7 +30,7 @@ Meteor.startup(function () {
     z2= 5;
     y1=-20;
     y2=20;
-    Meteor.subscribe('cells', x1, x2, y1, y2, z1, z2);
+
     console.log('startup');
     Meteor.call('getInViewCellCount', x1, x2, y1, y2, z1, z2, function(err, res) {
         if (err) {
@@ -38,6 +38,8 @@ Meteor.startup(function () {
         }
         MAGED.Classes.Game.TotalCellsInView = res;
     });
+
+    Meteor.subscribe('cells', x1, x2, y1, y2, z1, z2);
     MAGED.Classes.Game.cellsObserver = MAGED.Collections.Cells.find().observeChanges({
         added(id, fields){
             if(MAGED.Collections.Cells.find().count() === MAGED.Classes.Game.TotalCellsInView) {
