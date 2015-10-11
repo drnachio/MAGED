@@ -118,7 +118,7 @@ let addSheets = function(cArray, sheets){
                 type = cArray[Math.floor(Math.random() * cArray.length)].name;
             }
         }
-        sheets.push({class: MAGED.Classes[type], obj:{dynamic: Math.random() > 0.5, h: Math.round(Math.random()*10), b: 0, _class: type}});
+        sheets.push({class: MAGED.Classes[type], obj:{dynamic: Math.random() > 0.5, h:1+Math.round(Math.random()*10), b: 0, _class: type}});
     }
     //order by rarity
     sheets.sort(function(a,b){

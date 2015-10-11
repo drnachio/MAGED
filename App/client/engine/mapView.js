@@ -39,7 +39,6 @@ MAGED.Classes.MapView = class MapView {
         var createCell = function(c)
         {
             var cell = new MAGED.Classes.Cell(c);
-
             var stack = cell.stack;
 
             let cellH=0;
