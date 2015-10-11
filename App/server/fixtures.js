@@ -133,7 +133,7 @@ if(MAGED.Collections.GameObjects.find().count() === 0){
                 }
                 let b = 0;
                 if(i != 0){
-                    let prevSheet =sheets[i];
+                    let prevSheet =sheets[i-1];
                     b = prevSheet.b + prevSheet.h;
                 }
                 sheets.push(MAGED.Classes[type].createNewObject({dynamic: Math.random() > 0.5, h: Math.round(Math.random()*10), b: b}));
@@ -255,17 +255,17 @@ if(MAGED.Collections.GameObjects.find().count() === 0){
                 }
                 let b = 0;
                 if(i != 0){
-                    let prevSheet =sheets[i];
+                    let prevSheet =sheets[i-1];
                     b = prevSheet.b + prevSheet.h;
                 }
                 _sheets.push(MAGED.Classes[type].createNewObject({dynamic: Math.random() > 0.5, h: Math.round(Math.random()*10), b: b}));
             }
             //order by rarity
             sheets.sort(function(a,b){
-                return a.rarity() - b.rarity;
+                return a.constructor.rarity() - b.constructor.rarity;
             });
             _sheets.sort(function(a,b){
-                return a.rarity() - b.rarity;
+                return a.constructor.rarity() - b.constructor.rarity;
             });
             cell.addSheet(sheets);
             _cell.addSheet(_sheets);
