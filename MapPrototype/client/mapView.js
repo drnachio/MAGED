@@ -13,9 +13,10 @@ MAGED.Classes.MapView = class MapView {
         this._camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
         this._camera.position.z = 1000;
         this._camera.rotation.x = 0.4;
-
+        this._mouse = new THREE.Vector2();
+        this._mouseRayCaster = new THREE.Raycaster();
+        this._highLights = [];
         this._scene.add( new THREE.AmbientLight( 0x505060 ) );
-
 
 
         let radius = 100;
@@ -33,7 +34,7 @@ MAGED.Classes.MapView = class MapView {
         {
             for(let y=-18;y<=18;y++) {
                 var material = MAGED.Classes.Materials[Math.floor(Math.random() *MAGED.Classes.Materials.length)];
-                var sheet = new THREE.Mesh(myGeometry, material);
+                var sheet = new THREE.Mesh(myGeometry, material.clone());
                 sheet.position.x = x*radius*2 + y%2*radius;
                 sheet.position.y = y*radius*1.5;
                 sheet.scale.z = (1 + Math.round(Math.random() * 5)) / 4;
@@ -82,17 +83,33 @@ MAGED.Classes.MapView = class MapView {
     }
 
     onMouseWheel(e) {
-        this._camera.position.z -= e.wheelDelta / 10;
-        if(this._camera.position.z<500)
+        if(e.buttons==1)
         {
-            this._camera.position.z=500;
+            if(this._highLights[0])
+            {
+                var ref= this._highLights[0].object;
+                ref.scale.z  -= e.wheelDelta / 1000;
+
+                if (ref.scale.z < 0.1) {
+                    ref.scale.z = 0.1;
+                }
+                else if (ref.scale.z > 4) {
+                    ref.scale.z = 4;
+                }
+            }
+        } else {
+            this._camera.position.z -= e.wheelDelta / 10;
+            if (this._camera.position.z < 500) {
+                this._camera.position.z = 500;
+            }
+            else if (this._camera.position.z > 2000) {
+                this._camera.position.z = 2000;
+            }
+            this._spotLight.position.z = this._camera.position.z;
         }
-        else if(this._camera.position.z>2000)
-        {
-            this._camera.position.z=2000;
-        }
-        this._spotLight.position.z = this._camera.position.z;
+
     }
+
 
     onMouseMove(e)
     {
@@ -107,6 +124,9 @@ MAGED.Classes.MapView = class MapView {
         this._spotLight.position.y = this._camera.position.y + (this.height / 2 - e.y) * 2;
 
         this._lastEvent = e;
+
+        this._mouse.x = ( e.clientX / this._width ) * 2 - 1;
+        this._mouse.y = - ( e.clientY / this._height ) * 2 + 1;
     }
 
 
@@ -134,8 +154,31 @@ MAGED.Classes.MapView = class MapView {
     }
 
     animate() {
+
         if(this._running) requestAnimationFrame( this.animate.bind(this) );
+
+        for ( var i = 0; i < this._highLights.length; i++ ) {
+            let ref = this._highLights[i].object.material;
+            ref.emissive = ref.oldEmissive.clone();
+            break;
+        }
+
+        this._mouseRayCaster.setFromCamera( this._mouse, this._camera );
+
+        // calculate objects intersecting the picking ray
+        this._highLights = this._mouseRayCaster.intersectObjects( this._scene.children );
+
+        for ( var i = 0; i < this._highLights.length; i++ ) {
+            let ref = this._highLights[i].object.material;
+            if(!ref.oldEmissive) {
+                ref.oldEmissive = ref.emissive.clone();
+            }
+            ref.emissive.set( 0x333333 );
+            break;
+        }
+
         this._renderer.render( this._scene, this._camera );
+
         if(this._stats) this._stats.update();
     }
 

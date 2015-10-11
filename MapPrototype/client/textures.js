@@ -3,7 +3,7 @@ MAGED.Classes.Materials = [];
     let textures = {};
 
     {
-        let texture = THREE.ImageUtils.loadTexture('/img/desert.png');
+        let texture = THREE.ImageUtils.loadTexture('/img/textures/desert/desert.png');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
         texture.repeat.set(1 / 200, 1 / 200, 1 / 200);
@@ -12,7 +12,7 @@ MAGED.Classes.Materials = [];
     }
 
     {
-        let texture = THREE.ImageUtils.loadTexture('/img/bumpArena.jpg');
+        let texture = THREE.ImageUtils.loadTexture('/img/textures/desert/bumpArena.jpg');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
         texture.repeat.set(1 / 10, 1 / 10, 1 / 10);
@@ -20,7 +20,6 @@ MAGED.Classes.Materials = [];
         textures.bumpArena = texture;
     }
 
-    //let material = new THREE.MeshLambertMaterial({map: texture});
     let material = new THREE.MeshPhongMaterial({
         specular: new THREE.Color("rgb(15,11,19)"),
         shininess: 10,
@@ -34,9 +33,8 @@ MAGED.Classes.Materials = [];
 
 {
     let textures = {};
-
     {
-        let texture = THREE.ImageUtils.loadTexture('/img/stone.jpg');
+        let texture = THREE.ImageUtils.loadTexture('/img/textures/stone/stone.jpg');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
         texture.repeat.set(1 / 200, 1 / 200, 1 / 200);
@@ -98,7 +96,6 @@ MAGED.Classes.Materials = [];
     let textures = {};
 
     var name = 'grass';
-
     {
         let texture = THREE.ImageUtils.loadTexture('/img/textures/' + name + '/map.jpg');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
