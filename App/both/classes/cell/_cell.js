@@ -44,20 +44,6 @@ MAGED.Classes.Cell = class Cell extends MAGED.Classes.GameObject {
     get h(){ return this._h; };
     set h(val){ Cell.update(this._id, {$set: {_h: val}}); };
 
-    /*
-    set stack(val) {
-        if(!_.isArray(val)){
-            val = [val];
-        }
-        for(let i = 0; i < val.length; i++){
-            let temp = val[i];
-            if(temp instanceof MAGED.Classes.Sheet){
-                val[i] = temp._id;
-            }
-        }
-        //Cell.update(this._id, {$set:{_stack: val}});
-    };*/
-
     addSheet(sheets, position){
         if(!_.isArray(sheets)){
             sheets = [sheets];
