@@ -20,24 +20,39 @@ MAGED.Classes.MapView = class MapView {
 
 
         let radius = 100;
-        let shape = new THREE.Shape();
-        shape.moveTo(0, -radius);
-        shape.lineTo(radius, -radius / 2);
-        shape.lineTo(radius, radius / 2);
-        shape.lineTo(0, radius);
-        shape.lineTo(-radius, radius / 2);
-        shape.lineTo(-radius, -radius / 2);
-        shape.lineTo(0, -radius);
-        let myGeometry = new THREE.ExtrudeGeometry(shape, {amount:radius,curveSegments:0, steps:1, bevelEnabled:false});
+
+        var shapes =[];
+        for(var i=0;i<=1;i++)
+        {
+            let shape = new THREE.Shape();
+            var dx = (i%2*radius);
+            shape.moveTo(dx, -radius);
+            shape.lineTo(radius+dx, -radius / 2);
+            shape.lineTo(radius+dx, radius / 2);
+            shape.lineTo(dx, radius);
+            shape.lineTo(dx-radius, radius / 2);
+            shape.lineTo(dx-radius, -radius / 2);
+            shape.lineTo(dx, -radius);
+            shapes[i] = shape;
+        }
 
         for(let x=-18;x<=18;x++)
         {
             for(let y=-18;y<=18;y++) {
+                let myGeometry = new THREE.ExtrudeGeometry(shapes[Math.abs(y%2)], {amount:radius*5,curveSegments:0, steps:1, bevelEnabled:false});
+                //var myGeometry = new MAGED.Classes.octoCell(radius,0).geometry;
                 var material = MAGED.Classes.Materials[Math.floor(Math.random() *MAGED.Classes.Materials.length)];
                 var sheet = new THREE.Mesh(myGeometry, material.clone());
-                sheet.position.x = x*radius*2 + y%2*radius;
+                sheet._shape = shapes[Math.abs(y%2)];
+                sheet.position.x = x*radius*2;
                 sheet.position.y = y*radius*1.5;
-                sheet.scale.z = (1 + Math.round(Math.random() * 5)) / 4;
+
+                sheet.setHeight = function(h)
+                {
+                    this.geometry = new THREE.ExtrudeGeometry(this._shape, {amount:h,curveSegments:0, steps:1, bevelEnabled:false});
+                };
+                sheet.h =(1 + Math.round(Math.random() * 5)) / 4 * radius;
+                sheet.setHeight(sheet.h);
                 sheet.castShadow = true;
                 sheet.receiveShadow = true;
                 this._scene.add(sheet);
@@ -53,8 +68,7 @@ MAGED.Classes.MapView = class MapView {
         spotLight.shadowMapHeight = 4096;
         spotLight.shadowCameraNear = 200;
         spotLight.shadowCameraFar = 6000;
-        spotLight.shadowCameraFov = 200;
-
+        spotLight.shadowCameraFov = 120;
         this._scene.add(spotLight.target);
         this._scene.add(spotLight);
         this._spotLight = spotLight;
@@ -72,7 +86,11 @@ MAGED.Classes.MapView = class MapView {
         window.addEventListener('resize', this.onReseize.bind(this));
         this._canvas.addEventListener('mousemove',this.onMouseMove.bind(this));
         this._canvas.addEventListener('wheel',this.onMouseWheel.bind(this));
-
+        window.addEventListener('keydown',this.onKeyDown.bind(this));
+        window.addEventListener('keyup',this.onKeyUp.bind(this));
+        this._scroll = new THREE.Vector2();
+        this._scrollSpeed = new THREE.Vector2();
+        this._lastEvent = new THREE.Vector2();
     }
 
     showStats(){
@@ -82,28 +100,45 @@ MAGED.Classes.MapView = class MapView {
         document.body.appendChild( this._stats.domElement );
     }
 
+    onKeyDown(e)
+    {
+        if(e.keyCode==37 || e.keyCode==65) this._scroll.x = -1;
+        else if(e.keyCode==39|| e.keyCode==68) this._scroll.x = 1;
+        else if(e.keyCode==38|| e.keyCode==87) this._scroll.y = 1;
+        else if(e.keyCode==40|| e.keyCode==83) this._scroll.y = -1;
+    }
+
+    onKeyUp(e)
+    {
+        if(e.keyCode==37|| e.keyCode==65) this._scroll.x = 0;
+        else if(e.keyCode==39 || e.keyCode==68) this._scroll.x = 0;
+        else if(e.keyCode==38|| e.keyCode==87) this._scroll.y = 0;
+        else if(e.keyCode==40|| e.keyCode==83) this._scroll.y = 0;
+    }
+
     onMouseWheel(e) {
-        if(e.buttons==1)
+        if(e.altKey)
         {
             if(this._highLights[0])
             {
                 var ref= this._highLights[0].object;
-                ref.scale.z  -= e.wheelDelta / 1000;
+                ref.h  -= e.wheelDelta/10;
 
-                if (ref.scale.z < 0.1) {
-                    ref.scale.z = 0.1;
+                if (ref.h > 400) {
+                    ref.h= 400;
                 }
-                else if (ref.scale.z > 4) {
-                    ref.scale.z = 4;
+                else if (ref.h < 1) {
+                    ref.h = 1;
                 }
+                ref.setHeight(ref.h);
             }
         } else {
             this._camera.position.z -= e.wheelDelta / 10;
             if (this._camera.position.z < 500) {
                 this._camera.position.z = 500;
             }
-            else if (this._camera.position.z > 2000) {
-                this._camera.position.z = 2000;
+            else if (this._camera.position.z > 1500) {
+                this._camera.position.z = 1500;
             }
             this._spotLight.position.z = this._camera.position.z;
         }
@@ -132,8 +167,10 @@ MAGED.Classes.MapView = class MapView {
 
     onReseize()
     {
-        this._renderer.setSize( window.innerWidth, window.innerHeight );
-        this._camera.aspect	= window.innerWidth / window.innerHeight;
+        this._width = window.innerWidth;
+        this._height = window.innerHeight;
+        this._renderer.setSize( this._width ,this._height );
+        this._camera.aspect	= this._width  / this._height;
         this._camera.updateProjectionMatrix();
     }
 
@@ -156,6 +193,20 @@ MAGED.Classes.MapView = class MapView {
     animate() {
 
         if(this._running) requestAnimationFrame( this.animate.bind(this) );
+
+        if(this._scroll.x || this._scroll.y || this._scrollSpeed.x || this._scrollSpeed.y)
+        {
+            this._scrollSpeed.x = (this._scrollSpeed.x + this._scroll.x)*0.97;
+            this._scrollSpeed.y = (this._scrollSpeed.y + this._scroll.y)*0.97;
+            if(Math.abs(this._scrollSpeed.x)<0.5) this._scrollSpeed.x =0;
+            if(Math.abs(this._scrollSpeed.y)<0.5) this._scrollSpeed.y =0;
+            this._camera.position.x +=  this._scrollSpeed.x;
+            this._camera.position.y += this._scrollSpeed.y;
+            this._spotLight.target.position.x = this._camera.position.x;
+            this._spotLight.target.position.y = this._camera.position.y + 500;
+            this._spotLight.position.x = this._camera.position.x + (this._lastEvent.x - this.width /2) * 2;
+            this._spotLight.position.y = this._camera.position.y + (this.height / 2 - this._lastEvent.y) * 2;
+        }
 
         for ( var i = 0; i < this._highLights.length; i++ ) {
             let ref = this._highLights[i].object.material;

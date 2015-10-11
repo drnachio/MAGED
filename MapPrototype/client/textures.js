@@ -1,4 +1,5 @@
 MAGED.Classes.Materials = [];
+
 {
     let textures = {};
 
@@ -6,8 +7,8 @@ MAGED.Classes.Materials = [];
         let texture = THREE.ImageUtils.loadTexture('/img/textures/desert/desert.png');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
-        texture.repeat.set(1 / 200, 1 / 200, 1 / 200);
-        texture.offset.set(0.5, 0.5, 0.5);
+        texture.repeat.set(1 / 200, 1 / 100);
+        texture.offset.set(0, 0.5);
         textures.desert = texture;
     }
 
@@ -16,7 +17,7 @@ MAGED.Classes.Materials = [];
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
         texture.repeat.set(1 / 10, 1 / 10, 1 / 10);
-        texture.offset.set(0.5, 0.5, 0.5);
+        texture.offset.set(0, 0.5);
         textures.bumpArena = texture;
     }
 
@@ -31,26 +32,36 @@ MAGED.Classes.Materials = [];
     MAGED.Classes.Materials.push(material);
 }
 
+
 {
     let textures = {};
+
+    var name = 'stone';
+
     {
-        let texture = THREE.ImageUtils.loadTexture('/img/textures/stone/stone.jpg');
+        let texture = THREE.ImageUtils.loadTexture('/img/textures/' + name + '/map.jpg');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
-        texture.repeat.set(1 / 200, 1 / 200, 1 / 200);
-        texture.offset.set(0.5, 0.5, 0.5);
-        textures.desert = texture;
+        texture.repeat.set(1 / 200, 1 / 100);
+        texture.offset.set(0, 0.5);
+        textures.normal = texture;
     }
 
+    {
+        let texture = THREE.ImageUtils.loadTexture('/img/textures/' + name + '/bump.jpg');
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+        texture.anisotropy = 1;
+        texture.repeat.set(1 / 200, 1 / 100);
+        texture.offset.set(0, 0.5);
+        textures.bump = texture;
+    }
 
-    //let material = new THREE.MeshLambertMaterial({map: texture});
     let material = new THREE.MeshPhongMaterial({
-        color: new THREE.Color("rgb(155,156,150)"),
-        specular: new THREE.Color("rgb(155,113,90)"),
+        specular: new THREE.Color("rgb(50,50,50)"),
         shininess: 20,
-        bumpMap: textures.desert,
-        map: textures.desert,
-        bumpScale: 1,
+        bumpMap: textures.bump,
+        map: textures.normal,
+        bumpScale: 5
     });
 
     MAGED.Classes.Materials.push(material);
@@ -66,8 +77,8 @@ MAGED.Classes.Materials = [];
         let texture = THREE.ImageUtils.loadTexture('/img/textures/' + name + '/map.jpg');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
-        texture.repeat.set(1 / 200, 1 / 200, 1 / 200);
-        texture.offset.set(0.5, 0.5, 0.5);
+        texture.repeat.set(1 / 200, 1 / 100);
+        texture.offset.set(0, 0.5);
         textures.normal = texture;
     }
 
@@ -75,8 +86,8 @@ MAGED.Classes.Materials = [];
         let texture = THREE.ImageUtils.loadTexture('/img/textures/' + name + '/bump.jpg');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
-        texture.repeat.set(1 / 200, 1 / 200, 1 / 200);
-        texture.offset.set(0.5, 0.5, 0.5);
+        texture.repeat.set(1 / 200, 1 / 100);
+        texture.offset.set(0, 0.5);
         textures.bump = texture;
     }
 
@@ -100,8 +111,8 @@ MAGED.Classes.Materials = [];
         let texture = THREE.ImageUtils.loadTexture('/img/textures/' + name + '/map.jpg');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
-        texture.repeat.set(1 / 400, 1 / 400, 1 / 400);
-        texture.offset.set(0.5, 0.5, 0.5);
+        texture.repeat.set(1 / 200, 1 / 100);
+        texture.offset.set(0, 0.5);
         textures.normal = texture;
     }
 
@@ -109,8 +120,8 @@ MAGED.Classes.Materials = [];
         let texture = THREE.ImageUtils.loadTexture('/img/textures/' + name + '/bump.jpg');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
-        texture.repeat.set(1 / 400, 1 / 400, 1 / 400);
-        texture.offset.set(0.5, 0.5, 0.5);
+        texture.repeat.set(1 / 200, 1 / 100);
+        texture.offset.set(0, 0.5);
         textures.bump = texture;
     }
 
@@ -135,8 +146,8 @@ MAGED.Classes.Materials = [];
         let texture = THREE.ImageUtils.loadTexture('/img/textures/' + name + '/map.jpg');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
-        texture.repeat.set(1 / 200, 1 / 200, 1 / 200);
-        texture.offset.set(0.5, 0.5, 0.5);
+        texture.repeat.set(1 / 200, 1 / 100);
+        texture.offset.set(0, 0.5);
         textures.normal = texture;
     }
 
@@ -144,17 +155,17 @@ MAGED.Classes.Materials = [];
         let texture = THREE.ImageUtils.loadTexture('/img/textures/' + name + '/bump.jpg');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
-        texture.repeat.set(1 / 200, 1 / 200, 1 / 200);
-        texture.offset.set(0.5, 0.5, 0.5);
+        texture.repeat.set(1 / 200, 1 / 100);
+        texture.offset.set(0, 0.5);
         textures.bump = texture;
     }
 
     let material = new THREE.MeshPhongMaterial({
         specular: new THREE.Color("rgb(150,150,150)"),
-        shininess: 50,
+        shininess: 30,
         bumpMap: textures.bump,
         map: textures.normal,
-        bumpScale: 10
+        bumpScale: 5
     });
 
     MAGED.Classes.Materials.push(material);
@@ -170,8 +181,8 @@ MAGED.Classes.Materials = [];
         let texture = THREE.ImageUtils.loadTexture('/img/textures/' + name + '/difuse.jpg');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
-        texture.repeat.set(1 / 200, 1 / 200, 1 / 200);
-        texture.offset.set(0.5, 0.5, 0.5);
+        texture.repeat.set(1 / 200, 1 / 100);
+        texture.offset.set(0, 0.5);
         textures.normal = texture;
     }
 
@@ -179,8 +190,8 @@ MAGED.Classes.Materials = [];
         let texture = THREE.ImageUtils.loadTexture('/img/textures/' + name + '/bump.jpg');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
-        texture.repeat.set(1 / 200, 1 / 200, 1 / 200);
-        texture.offset.set(0.5, 0.5, 0.5);
+        texture.repeat.set(1 / 200, 1 / 100);
+        texture.offset.set(0, 0.5);
         textures.bump = texture;
     }
 
@@ -188,8 +199,8 @@ MAGED.Classes.Materials = [];
         let texture = THREE.ImageUtils.loadTexture('/img/textures/' + name + '/lightB.jpg');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
-        texture.repeat.set(1 / 200, 1 / 200, 1 / 200);
-        texture.offset.set(0.5, 0.5, 0.5);
+        texture.repeat.set(1 / 200, 1 / 100);
+        texture.offset.set(0, 0.5);
         textures.light = texture;
     }
 
@@ -220,8 +231,8 @@ MAGED.Classes.Materials = [];
         let texture = THREE.ImageUtils.loadTexture('/img/textures/' + name + '/map.jpg');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
-        texture.repeat.set(1 / 400, 1 / 400, 1 / 400);
-        texture.offset.set(0.5, 0.5, 0.5);
+        texture.repeat.set(1 / 200, 1 / 100);
+        texture.offset.set(0, 0.5);
         textures.normal = texture;
     }
 
@@ -229,8 +240,8 @@ MAGED.Classes.Materials = [];
         let texture = THREE.ImageUtils.loadTexture('/img/textures/' + name + '/bump.jpg');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
-        texture.repeat.set(1 / 400, 1 / 400, 1 / 400);
-        texture.offset.set(0.5, 0.5, 0.5);
+        texture.repeat.set(1 / 200, 1 / 100);
+        texture.offset.set(0, 0.5);
         textures.bump = texture;
     }
 
@@ -255,8 +266,8 @@ MAGED.Classes.Materials = [];
         let texture = THREE.ImageUtils.loadTexture('/img/textures/' + name + '/map.jpg');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
-        texture.repeat.set(1 / 400, 1 / 400, 1 / 400);
-        texture.offset.set(0.5, 0.5, 0.5);
+        texture.repeat.set(1 / 200, 1 / 100);
+        texture.offset.set(0, 0.5);
         textures.normal = texture;
     }
 
@@ -264,8 +275,8 @@ MAGED.Classes.Materials = [];
         let texture = THREE.ImageUtils.loadTexture('/img/textures/' + name + '/bump.jpg');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
-        texture.repeat.set(1 / 400, 1 / 400, 1 / 400);
-        texture.offset.set(0.5, 0.5, 0.5);
+        texture.repeat.set(1 / 200, 1 / 100);
+        texture.offset.set(0, 0.5);
         textures.bump = texture;
     }
 
@@ -290,8 +301,8 @@ MAGED.Classes.Materials = [];
         let texture = THREE.ImageUtils.loadTexture('/img/textures/' + name + '/map.jpg');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
-        texture.repeat.set(1 / 200, 1 / 200, 1 / 200);
-        texture.offset.set(0.5, 0.5, 0.5);
+        texture.repeat.set(1 / 200, 1 / 100);
+        texture.offset.set(0, 0.5);
         textures.normal = texture;
     }
 
@@ -299,8 +310,8 @@ MAGED.Classes.Materials = [];
         let texture = THREE.ImageUtils.loadTexture('/img/textures/' + name + '/bump.jpg');
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.anisotropy = 1;
-        texture.repeat.set(1 / 200, 1 / 200, 1 / 200);
-        texture.offset.set(0.5, 0.5, 0.5);
+        texture.repeat.set(1 / 200, 1 / 100);
+        texture.offset.set(0, 0.5);
         textures.bump = texture;
     }
 
