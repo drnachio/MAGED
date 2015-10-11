@@ -2,6 +2,7 @@
  * Created by Marcos on 10/10/2015.
  */
 if(MAGED.Collections.GameObjects.find().count() === 0){
+    console.log('START!');
     let cArray = _.toArray(MAGED.Classes).filter(function(obj){
         return _.contains(['Crystal', 'Desert', 'Dust', 'Grass', 'GreenRock', 'Lava', 'Rock', 'Stone', 'WetStone'], obj.name);
     });
