@@ -36,50 +36,45 @@ MAGED.Classes.MapView = class MapView {
             shapes[i] = shape;
         }
 
-        /*
-        for(let x=-18;x<=18;x++)
+        var createCell = function(c)
         {
-            for(let y=-18;y<=18;y++) {
-                let myGeometry = new THREE.ExtrudeGeometry(shapes[Math.abs(y%2)], {amount:radius*5,curveSegments:0, steps:1, bevelEnabled:false});
-                //var myGeometry = new MAGED.Classes.octoCell(radius,0).geometry;
-                var material = MAGED.Classes.Materials[Math.floor(Math.random() *MAGED.Classes.Materials.length)];
-                var sheet = new THREE.Mesh(myGeometry, material.clone());
-                sheet._shape = shapes[Math.abs(y%2)];
-                sheet.position.x = x*radius*2;
-                sheet.position.y = y*radius*1.5;
+            var cell = new MAGED.Classes.Cell(c);
 
-                sheet.setHeight = function(h)
-                {
-                    this.geometry = new THREE.ExtrudeGeometry(this._shape, {amount:h,curveSegments:0, steps:1, bevelEnabled:false});
-                };
-                sheet.h =(1 + Math.round(Math.random() * 5)) / 4 * radius;
-                sheet.setHeight(sheet.h);
-                sheet.castShadow = true;
-                sheet.receiveShadow = true;
-                this._scene.add(sheet);
+            if(cell.z==0) {
+                var stack = cell.stack;
+
+                for(var i=0;i<stack.length;i++) {
+                    let sheet = stack[i];
+                    var x = cell.x - Math.round(cell.y / 2);
+                    var y = cell.y;
+
+                    let myGeometry = new THREE.ExtrudeGeometry(shapes[Math.abs(y % 2)], {
+                        amount: 1,
+                        curveSegments: 0,
+                        steps: 1,
+                        bevelEnabled: false
+                    });
+
+                    var material = MAGED.Classes.Materials[sheet._class];
+                    var mesh = new THREE.Mesh(myGeometry, material.clone());
+                    mesh._shape = shapes[Math.abs(y % 2)];
+                    mesh.position.x = x * radius * 2;
+                    mesh.position.y = y * radius * 1.5;
+                    mesh.setHeight = function (h) {
+                        this.geometry = new THREE.ExtrudeGeometry(this._shape, {
+                            amount: h,
+                            curveSegments: 0,
+                            steps: 1,
+                            bevelEnabled: false
+                        });
+                    };
+                    mesh.h = cell.h;
+                    mesh.setHeight(mesh.h);
+                    mesh.castShadow = true;
+                    mesh.receiveShadow = true;
+                    this._scene.add(mesh);
+                }
             }
-        }
-        */
-
-        var createCell = function(c){
-            
-            let myGeometry = new THREE.ExtrudeGeometry(shapes[Math.abs(c._y%2)], {amount:1,curveSegments:0, steps:1, bevelEnabled:false});
-            var material = MAGED.Classes.Materials[Math.floor(1)];
-
-            var mesh = new THREE.Mesh(myGeometry, material.clone());
-            mesh._shape = shapes[Math.abs(c._y%2)];
-            mesh.position.x = c._x * radius*2;
-            mesh.position.y = c._y * radius*1.5;
-
-            mesh.setHeight = function(h)
-            {
-                this.geometry = new THREE.ExtrudeGeometry(this._shape, {amount:h,curveSegments:0, steps:1, bevelEnabled:false});
-            };
-            mesh.h = c._h;
-            mesh.setHeight(mesh.h);
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-            this._scene.add(mesh);
         };
 
         MAGED.Collections.Cells.find({}).forEach(createCell.bind(this));

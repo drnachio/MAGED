@@ -1,4 +1,4 @@
-MAGED.Classes.Materials = [];
+MAGED.Classes.Materials = {};
 
 {
     let textures = {};
@@ -29,7 +29,7 @@ MAGED.Classes.Materials = [];
         bumpScale: 1,
     });
 
-    MAGED.Classes.Materials.push(material);
+    MAGED.Classes.Materials["Desert"] = material;
 }
 
 
@@ -64,7 +64,7 @@ MAGED.Classes.Materials = [];
         bumpScale: 5
     });
 
-    MAGED.Classes.Materials.push(material);
+    MAGED.Classes.Materials["Stone"] = material;
 }
 
 
@@ -99,7 +99,7 @@ MAGED.Classes.Materials = [];
         bumpScale: 1
     });
 
-    MAGED.Classes.Materials.push(material);
+    MAGED.Classes.Materials["Rock"] = material;
 }
 
 
@@ -133,7 +133,7 @@ MAGED.Classes.Materials = [];
         bumpScale: 0.5
     });
 
-    MAGED.Classes.Materials.push(material);
+    MAGED.Classes.Materials["Grass"] = material;
 }
 
 
@@ -168,7 +168,7 @@ MAGED.Classes.Materials = [];
         bumpScale: 5
     });
 
-    MAGED.Classes.Materials.push(material);
+    MAGED.Classes.Materials["Crystal"] = material;
 }
 
 
@@ -215,9 +215,7 @@ MAGED.Classes.Materials = [];
         bumpScale: 10
     });
 
-
-
-    MAGED.Classes.Materials.push(material);
+    MAGED.Classes.Materials["Lava"] = material;
 }
 
 
@@ -253,7 +251,7 @@ MAGED.Classes.Materials = [];
         bumpScale: 10
     });
 
-    MAGED.Classes.Materials.push(material);
+    MAGED.Classes.Materials["GreenRock"] = material;
 }
 
 
@@ -288,7 +286,7 @@ MAGED.Classes.Materials = [];
         bumpScale: 10
     });
 
-    MAGED.Classes.Materials.push(material);
+    MAGED.Classes.Materials["Dust"] = material;
 }
 
 
@@ -323,5 +321,5 @@ MAGED.Classes.Materials = [];
         bumpScale: 8
     });
 
-    MAGED.Classes.Materials.push(material);
+    MAGED.Classes.Materials["WetStone"] = material;
 }
