@@ -41,7 +41,6 @@ MAGED.Classes.MapView = class MapView {
             var cell = new MAGED.Classes.Cell(c);
             var stack = cell.stack;
 
-            let cellH=0;
             for(var i=0;i<stack.length;i++) {
 
                 let sheet = stack[i];
@@ -71,8 +70,7 @@ MAGED.Classes.MapView = class MapView {
                     this.sheet.height = h;
                 };
                 mesh.h = sheet.h * 10;
-                mesh.position.z = cellH * 10;
-                cellH += sheet.h;
+                mesh.position.z = sheet.b * 10;
                 mesh.sheet = sheet;
                 mesh.setHeight(mesh.h);
                 mesh.castShadow = true;
