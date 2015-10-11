@@ -14,9 +14,6 @@ MAGED.Classes.Rock = class Rock extends MAGED.Classes.Material {
     static createNewObject(properties){
         properties['_class'] = 'Rock';
         properties['_table'] = 'Sheets';
-        if(!properties.rarity){
-            properties.rarity = MAGED.Constants.RARITY.UNCOMMON;
-        }
         let newRockId = Rock._collection.insert(properties);
         MAGED.Classes.GameObject.createNewObject(newRockId, properties._class, properties._table);
         return new Rock(Rock._collection.findOne({_id: newRockId}));
@@ -25,6 +22,13 @@ MAGED.Classes.Rock = class Rock extends MAGED.Classes.Material {
     static removeObject(rockId){
         MAGED.Classes.GameObject.removeObject(rockId);
         return Rock._collection.remove(rockId);
+    };
+
+    static rarity(mult){
+        if(!mult){
+            mult = 1;
+        }
+        return MAGED.Constants.RARITY.UNCOMMON * mult;
     };
 
     constructor(obj){

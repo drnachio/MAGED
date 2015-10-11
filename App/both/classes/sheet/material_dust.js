@@ -14,9 +14,6 @@ MAGED.Classes.Dust = class Dust extends MAGED.Classes.Material {
     static createNewObject(properties){
         properties['_class'] = 'Dust';
         properties['_table'] = 'Sheets';
-        if(!properties.rarity){
-            properties.rarity = MAGED.Constants.RARITY.COMMON;
-        }
         let newDustId = Dust._collection.insert(properties);
         MAGED.Classes.GameObject.createNewObject(newDustId, properties._class, properties._table);
         return new Dust(Dust._collection.findOne({_id: newDustId}));
@@ -25,6 +22,13 @@ MAGED.Classes.Dust = class Dust extends MAGED.Classes.Material {
     static removeObject(dustId){
         MAGED.Classes.GameObject.removeObject(dustId);
         return Dust._collection.remove(dustId);
+    };
+
+    static rarity(mult){
+        if(!mult){
+            mult = 1;
+        }
+        return MAGED.Constants.RARITY.COMMON * mult;
     };
 
     constructor(obj){

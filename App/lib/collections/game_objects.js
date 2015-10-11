@@ -14,3 +14,17 @@ MAGED.Collections.GameObjects.allow({
         return true;
     }
 });
+
+Meteor.methods({
+    getTotalGameObjectsCount(){
+        return MAGED.Collections.GameObjects.find({}).count();
+    },
+    findGameObject(query, multi){
+        if(multi){
+            return MAGED.Collections.GameObjects.find(query).fetch();
+        }
+        else {
+            return MAGED.Collections.GameObjects.findOne(query);
+        }
+    }
+});

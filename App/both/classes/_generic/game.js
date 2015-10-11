@@ -7,31 +7,40 @@ if(Meteor.isClient) {
     MAGED.Classes.Game._gameObjects = [];
     MAGED.Classes.Game._gameObjects.length = 0;
     MAGED.Classes.Game._gameObjects.maxLength = 100;
-    MAGED.Classes.Game.getGameObjectByID = function (id) {
-        /*if(MAGED.Classes.Game._gameObjects[id]) {
-            return MAGED.Classes.Game._gameObjects[id];
-        }
-        else{*/
-            let go = MAGED.Collections.GameObjects.findOne({objId: id});
-            if(go){
-                let typedObj = MAGED.Collections[go.collection].findOne({_id: id});
-                return new MAGED.Classes[go.class](typedObj);
+    MAGED.Classes.Game.getGameObjectById = function (id) {
+        return new Promise(function(resolve){
+            let go = MAGED.Classes.Game._gameObjects[id];
+            if(go) {
+                resolve(new MAGED.Classes[go.class](MAGED.Collections[go.collection].findOne({_id: id})));
             }
             else{
-                return null;
+                Meteor.call('findGameObject',{objId: id}, function (err, res) {
+                    if(err){resolve(null);}
+                    go = res;
+                    if(!go){
+                        resolve(null);
+                    }
+                    MAGED.Classes.Game.addGameObject(go);
+                    if(go){
+                        resolve(new MAGED.Classes[go.class](MAGED.Collections[go.collection].findOne({_id: id})));
+                    }
+                    else{
+                        resolve(null);
+                    }
+                });
             }
-        //}
+        });
     };
     MAGED.Classes.Game.addGameObject = function(obj){
-       /* if(MAGED.Classes.Game._gameObjects.length+1 > MAGED.Classes.Game._gameObjects.maxLength){
+        if(MAGED.Classes.Game._gameObjects.length+1 > MAGED.Classes.Game._gameObjects.maxLength){
             MAGED.Classes.Game.deleteOldestGameObject();
         }
         obj.__added = new Date().getTime();
-        MAGED.Classes.Game._gameObjects[obj._id] = obj;
+        MAGED.Classes.Game._gameObjects[obj.objId] = obj;
         MAGED.Classes.Game._gameObjects.length++;
-        return MAGED.Classes.Game._gameObjects.length;*/
+        return MAGED.Classes.Game._gameObjects.length;
     };
-    MAGED.Classes.Game.deleteGameObjectByID = function (id) {
+    MAGED.Classes.Game.deleteGameObjectById = function (id) {
         delete MAGED.Classes.Game._gameObjects[id];
         MAGED.Classes.Game._gameObjects.length--;
     };
@@ -42,7 +51,7 @@ if(Meteor.isClient) {
                 oldest = MAGED.Classes.Game._gameObjects[id];
             }
         }
-        MAGED.Classes.Game.deleteGameObjectByID(oldest._id);
+        MAGED.Classes.Game.deleteGameObjectById(oldest.objId);
     };
     MAGED.Classes.Game.parseGameObjects = function (cursor) {
         var res = [];
@@ -54,14 +63,7 @@ if(Meteor.isClient) {
         return res;
     };
 
-    MAGED.Classes.Game.loadAllCellsInMemory = function(){
-        MAGED.Collections.Cells.find({}).forEach(function(obj){
-            MAGED.Classes.Game.addGameObject(obj);
-        });
-        MAGED.Collections.Sheets.find({}).forEach(function(obj){
-            MAGED.Classes.Game.addGameObject(obj);
-        });
-    };
-
+    MAGED.Classes.Game.TotalSheetsInView = null;
+    MAGED.Classes.Game.allCellsLoaded = new ReactiveVar(false);
     MAGED.Classes.Game.ready = new ReactiveVar(false);
 }

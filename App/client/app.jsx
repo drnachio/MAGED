@@ -1,26 +1,59 @@
 /**
  * Created by Marcos on 10/10/2015.
  */
-let executeRender = function(ready){
-    console.log(ready);
-    if(ready){
-        console.log('goRender');
-        React.render(<App />, document.getElementById("render-target"));
-    }
-    else{
+var startTime = new Date().getTime();
+let getSheets = function(){
+    console.log('allCellsloaded: ' + (new Date().getTime() - startTime) + 'ms');
+    //
+    let sheetIds = [];
+    console.log('start getIds' + (new Date().getTime() - startTime) + 'ms');
+    MAGED.Collections.Cells.find().forEach(function (obj) {
+        sheetIds.push(obj._stack);
         return;
-    }
+    });
+    sheetIds = _.flatten(sheetIds);
+    Meteor.call('getSheetsCountFromIds', sheetIds, function (err, res) {
+        if (err) {
+            console.error(err);
+        }
+        MAGED.Classes.Game.TotalSheetsInView = res;
+        console.log('all sheets (' + res + ')' + (new Date().getTime() - startTime) + 'ms');
+    });
+    Meteor.subscribe('sheets', sheetIds);
+    console.log('subscribe to sheets' + (new Date().getTime() - startTime) + 'ms');
 };
 Meteor.startup(function () {
     // Use Meteor.startup to render the component after the page is ready
-    Meteor.subscribe('allSheets');
-    Meteor.subscribe('allCells');
-    Meteor.subscribe('allGameObjects');
+    let x1 = y1 = z1 = -10;
+    let x2 = y2 = z2 = 10;
+    Meteor.subscribe('cells', x1, x2, y1, y2, z1, z2);
     console.log('startup');
-    Tracker.autorun(function(){
-        executeRender(MAGED.Classes.Game.ready.get());
+    Meteor.call('getInViewCellCount', x1, x2, y1, y2, z1, z2, function(err, res) {
+        if (err) {
+            console.error(err);
+        }
+        MAGED.Classes.Game.TotalCellsInView = res;
     });
-    setTimeout(function(){MAGED.Classes.Game.ready.set(true);}, 4000);
+    MAGED.Classes.Game.cellsObserver = MAGED.Collections.Cells.find().observeChanges({
+        added(id, fields){
+            if(MAGED.Collections.Cells.find().count() === MAGED.Classes.Game.TotalCellsInView) {
+                getSheets();
+                MAGED.Classes.Game.cellsObserver.stop();
+                delete MAGED.Classes.Game.cellsObserver;
+            }
+        }
+    });
+    MAGED.Classes.Game.sheetsObserver = MAGED.Collections.Sheets.find().observeChanges({
+        added(id, fields){
+            if(MAGED.Collections.Sheets.find().count() === MAGED.Classes.Game.TotalSheetsInView) {
+                console.log('GO RENDER');
+                console.log((new Date().getTime() - startTime) + 'ms');
+                MAGED.Classes.Game.sheetsObserver.stop();
+                React.render(<App />, document.getElementById("render-target"));
+                delete MAGED.Classes.Game.sheetsObserver;
+            }
+        }
+    });
 });
 Sheet = React.createClass({
     propTypes: {

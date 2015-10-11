@@ -14,9 +14,6 @@ MAGED.Classes.Crystal = class Crystal extends MAGED.Classes.Material {
     static createNewObject(properties){
         properties['_class'] = 'Crystal';
         properties['_table'] = 'Sheets';
-        if(!properties.rarity){
-            properties.rarity = MAGED.Constants.RARITY.ULTRARARE;
-        }
         let newCrystalId = Crystal._collection.insert(properties);
         MAGED.Classes.GameObject.createNewObject(newCrystalId, properties._class, properties._table);
         return new Crystal(Crystal._collection.findOne({_id: newCrystalId}));
@@ -25,6 +22,13 @@ MAGED.Classes.Crystal = class Crystal extends MAGED.Classes.Material {
     static removeObject(crystalId){
         MAGED.Classes.GameObject.removeObject(crystalId);
         return Crystal._collection.remove(crystalId);
+    };
+
+    static rarity(mult){
+        if(!mult){
+            mult = 1;
+        }
+        return MAGED.Constants.RARITY.ULTRARARE * mult;
     };
 
     constructor(obj){

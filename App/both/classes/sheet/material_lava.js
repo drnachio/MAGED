@@ -14,9 +14,6 @@ MAGED.Classes.Lava = class Lava extends MAGED.Classes.Material {
     static createNewObject(properties){
         properties['_class'] = 'Lava';
         properties['_table'] = 'Sheets';
-        if(!properties.rarity){
-            properties.rarity = MAGED.Constants.RARITY.ULTRARARE;
-        }
         let newLavaId = Lava._collection.insert(properties);
         MAGED.Classes.GameObject.createNewObject(newLavaId, properties._class, properties._table);
         return new Lava(Lava._collection.findOne({_id: newLavaId}));
@@ -25,6 +22,13 @@ MAGED.Classes.Lava = class Lava extends MAGED.Classes.Material {
     static removeObject(lavaId){
         MAGED.Classes.GameObject.removeObject(lavaId);
         return Lava._collection.remove(lavaId);
+    };
+
+    static rarity(mult){
+        if(!mult){
+            mult = 1;
+        }
+        return MAGED.Constants.RARITY.ULTRARARE * mult;
     };
 
     constructor(obj){

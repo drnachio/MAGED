@@ -14,9 +14,6 @@ MAGED.Classes.WetStone = class WetStone extends MAGED.Classes.Material {
     static createNewObject(properties){
         properties['_class'] = 'WetStone';
         properties['_table'] = 'Sheets';
-        if(!properties.rarity){
-            properties.rarity = MAGED.Constants.RARITY.RARE;
-        }
         let newWetStoneId = WetStone._collection.insert(properties);
         MAGED.Classes.GameObject.createNewObject(newWetStoneId, properties._class, properties._table);
         return new WetStone(WetStone._collection.findOne({_id: newWetStoneId}));
@@ -25,6 +22,13 @@ MAGED.Classes.WetStone = class WetStone extends MAGED.Classes.Material {
     static removeObject(wetStoneId){
         MAGED.Classes.GameObject.removeObject(wetStoneId);
         return WetStone._collection.remove(wetStoneId);
+    };
+
+    static rarity(mult){
+        if(!mult){
+            mult = 1;
+        }
+        return MAGED.Constants.RARITY.RARE * mult;
     };
 
     constructor(obj){

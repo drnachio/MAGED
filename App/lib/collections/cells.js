@@ -14,3 +14,9 @@ MAGED.Collections.Cells.allow({
         return true;
     }
 });
+
+Meteor.methods({
+    getInViewCellCount(x1, x2, y1, y2, z1, z2){
+        return MAGED.Collections.Cells.find({_x: {$gte: x1, $lte: x2}, _y: {$gte: y1, $lte: y2}, _z: {$gte: z1, $lte: z2}}).count();
+    }
+});

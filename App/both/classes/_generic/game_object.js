@@ -22,7 +22,6 @@ MAGED.Classes.GameObject = class GameObject {
 
     constructor(obj){
         _.extend(this, obj);
-        //MAGED.Classes.Game.addGameObject(this);
     };
 
     getEvents(){

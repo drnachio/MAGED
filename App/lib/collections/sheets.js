@@ -14,3 +14,9 @@ MAGED.Collections.Sheets.allow({
         return true;
     }
 });
+
+Meteor.methods({
+    getSheetsCountFromIds(ids){
+        return MAGED.Collections.Sheets.find({_id: {$in: ids}}).count();
+    }
+});
