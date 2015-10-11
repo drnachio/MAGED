@@ -118,7 +118,7 @@ let addSheets = function(cArray, sheets){
                 type = cArray[Math.floor(Math.random() * cArray.length)].name;
             }
         }
-        sheets.push({class: MAGED.Classes[type], obj:{dynamic: Math.random() > 0.5, h: Math.round(Math.random()*10), b: 0, _class: type}});
+        sheets.push({class: MAGED.Classes[type], obj:{_id: new Meteor.Collection.ObjectID().toJSONValue(),dynamic: Math.random() > 0.5, h: Math.round(Math.random()*10), b: 0, _class: type}});
     }
     //order by rarity
     sheets.sort(function(a,b){
@@ -149,42 +149,32 @@ if(MAGED.Collections.GameObjects.find().count() === 0){
             let _y = -y;
             let _z = (x + y);
             let z = -_z;
-            let cellC1 = MAGED.Classes.Cell.createNewObject({_x: x, _y:y,_z:z,_h:Math.round(Math.random()*100),_stack:[]});
-            let cellC2 = MAGED.Classes.Cell.createNewObject({_x: _x, _y:_y,_z:_z,_h:Math.round(Math.random()*100),_stack:[]});
-            let cellC3 = MAGED.Classes.Cell.createNewObject({_x: _x, _y:y,_z:((_x + y)*-1),_h:Math.round(Math.random()*100),_stack:[]});
-            let cellC4 = MAGED.Classes.Cell.createNewObject({_x: x, _y:_y,_z:((x + _y)*-1),_h:Math.round(Math.random()*100),_stack:[]});
-            let sheetsC1 = [];
-            let sheetsC2 = [];
-            let sheetsC3 = [];
-            let sheetsC4 = [];
-            sheetsC1 = addSheets(cArray, sheetsC1);
-            sheetsC2 = addSheets(cArray, sheetsC2);
-            sheetsC3 = addSheets(cArray, sheetsC3);
-            sheetsC4 = addSheets(cArray, sheetsC4);
+            if(y === 0 && x === 0 && z === 0){
+                let cellC1 = MAGED.Classes.Cell.createNewObject({_x: x, _y:y,_z:z,_h:Math.round(Math.random()*100),_stack:[]});
+                let sheetsC1 = [];
+                sheetsC1 = addSheets(cArray, sheetsC1);
+                cellC1.addSheet(sheetsC1);
+            }
+            else {
+                let cellC1 = MAGED.Classes.Cell.createNewObject({_x: x, _y: y, _z: z, _h: Math.round(Math.random() * 100), _stack: []});
+                let cellC2 = MAGED.Classes.Cell.createNewObject({_x: _x, _y: _y, _z: _z, _h: Math.round(Math.random() * 100), _stack: []});
+                let cellC3 = MAGED.Classes.Cell.createNewObject({_x: _x, _y: y, _z: ((_x + y) * -1), _h: Math.round(Math.random() * 100), _stack: []});
+                let cellC4 = MAGED.Classes.Cell.createNewObject({_x: x, _y: _y, _z: ((x + _y) * -1), _h: Math.round(Math.random() * 100), _stack: []});
+                let sheetsC1 = [];
+                let sheetsC2 = [];
+                let sheetsC3 = [];
+                let sheetsC4 = [];
+                sheetsC1 = addSheets(cArray, sheetsC1);
+                sheetsC2 = addSheets(cArray, sheetsC2);
+                sheetsC3 = addSheets(cArray, sheetsC3);
+                sheetsC4 = addSheets(cArray, sheetsC4);
 
-            cellC1.addSheet(sheetsC1);
-            cellC2.addSheet(sheetsC2);
-            cellC3.addSheet(sheetsC3);
-            cellC4.addSheet(sheetsC4);
-            console.log('(' +x+','+y+','+z+')');
+                cellC1.addSheet(sheetsC1);
+                cellC2.addSheet(sheetsC2);
+                cellC3.addSheet(sheetsC3);
+                cellC4.addSheet(sheetsC4);
+            }
         }
     }
-    /*for(let i = 0; i < 3000; i++){
-        let cell = MAGED.Classes.Cell.createNewObject({_x: Math.round(Math.random()*100), _y:Math.round(Math.random()*100),_z:Math.round(Math.random()*100),_h:Math.round(Math.random()*100),_stack:[]});
-        for(let j = 0; j < 5; j++) {
-            let type = '';
-            let rnd = Math.random();
-            if(rnd > 0.25){
-                type = 'Material';
-            }
-            else if(rnd >= 0.1){
-                type = 'Building';
-            }
-            else{
-                type = 'Ruin';
-            }
-            let sheet = MAGED.Classes[type].createNewObject({dynamic: Math.random() > 0.5, height: Math.round(Math.random()*10)});
-            cell.addSheet(sheet._id);
-        }
-    }*/
+    console.log('END');
 }
