@@ -24,8 +24,8 @@ let getSheets = function(){
 };
 Meteor.startup(function () {
     // Use Meteor.startup to render the component after the page is ready
-    let x1 = y1 = z1 = -10;
-    let x2 = y2 = z2 = 10;
+    let x1 = y1 = z1 = -5;
+    let x2 = y2 = z2 = 5;
     Meteor.subscribe('cells', x1, x2, y1, y2, z1, z2);
     console.log('startup');
     Meteor.call('getInViewCellCount', x1, x2, y1, y2, z1, z2, function(err, res) {
@@ -50,6 +50,9 @@ Meteor.startup(function () {
                 console.log((new Date().getTime() - startTime) + 'ms');
                 MAGED.Classes.Game.sheetsObserver.stop();
                 React.render(<App />, document.getElementById("render-target"));
+                var mapView = new MAGED.Classes.MapView();
+                mapView.start();
+                mapView.showStats();
                 delete MAGED.Classes.Game.sheetsObserver;
             }
         }

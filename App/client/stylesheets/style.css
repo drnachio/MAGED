@@ -1,0 +1,23 @@
+/* CSS declarations go here */
+html, body {
+    padding:0px;
+    margin:0px;
+    background-color:black;
+    color:white;
+}
+
+canvas
+{
+    top:0px;
+    left:0px;
+    position: absolute;
+    cursor: crosshair;
+}
+
+#render-target
+{
+    position: absolute;
+    z-index:1;
+    max-height:100%;
+    overflow-y: scroll;
+}

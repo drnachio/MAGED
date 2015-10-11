@@ -36,7 +36,7 @@ MAGED.Classes.MapView = class MapView {
             shapes[i] = shape;
         }
 
-
+        /*
         for(let x=-18;x<=18;x++)
         {
             for(let y=-18;y<=18;y++) {
@@ -59,6 +59,30 @@ MAGED.Classes.MapView = class MapView {
                 this._scene.add(sheet);
             }
         }
+        */
+
+        var createCell = function(c){
+            
+            let myGeometry = new THREE.ExtrudeGeometry(shapes[Math.abs(c._y%2)], {amount:1,curveSegments:0, steps:1, bevelEnabled:false});
+            var material = MAGED.Classes.Materials[Math.floor(1)];
+
+            var mesh = new THREE.Mesh(myGeometry, material.clone());
+            mesh._shape = shapes[Math.abs(c._y%2)];
+            mesh.position.x = c._x * radius*2;
+            mesh.position.y = c._y * radius*1.5;
+
+            mesh.setHeight = function(h)
+            {
+                this.geometry = new THREE.ExtrudeGeometry(this._shape, {amount:h,curveSegments:0, steps:1, bevelEnabled:false});
+            };
+            mesh.h = c._h;
+            mesh.setHeight(mesh.h);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            this._scene.add(mesh);
+        };
+
+        MAGED.Collections.Cells.find({}).forEach(createCell.bind(this));
 
         var spotLight = new THREE.SpotLight(0xffffff);
         spotLight.position.set(0, 0, 1000);
