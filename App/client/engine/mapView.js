@@ -40,42 +40,42 @@ MAGED.Classes.MapView = class MapView {
         {
             var cell = new MAGED.Classes.Cell(c);
 
-            if(cell.z==0) {
-                var stack = cell.stack;
+            var stack = cell.stack;
+            console.log(cell.stack);
+            for(var i=0;i<stack.length;i++) {
 
-                for(var i=0;i<stack.length;i++) {
-                    let sheet = stack[i];
-                    var x = cell.x - Math.round(cell.y / 2);
-                    var y = cell.y;
+                let sheet = stack[i];
+                var x = cell.x;
+                var y = cell.z;
 
-                    let myGeometry = new THREE.ExtrudeGeometry(shapes[Math.abs(y % 2)], {
-                        amount: 1,
+                let myGeometry = new THREE.ExtrudeGeometry(shapes[Math.abs(y % 2)], {
+                    amount: 1,
+                    curveSegments: 0,
+                    steps: 1,
+                    bevelEnabled: false
+                });
+
+                var material = MAGED.Classes.Materials[sheet._class];
+                var mesh = new THREE.Mesh(myGeometry, material.clone());
+                mesh._shape = shapes[Math.abs(y % 2)];
+                mesh.position.x = x * radius * 2;
+                mesh.position.y = y * radius * 1.5;
+
+
+                mesh.setHeight = function (h) {
+                    this.geometry = new THREE.ExtrudeGeometry(this._shape, {
+                        amount: h,
                         curveSegments: 0,
                         steps: 1,
                         bevelEnabled: false
                     });
-
-                    var material = MAGED.Classes.Materials[sheet._class];
-                    var mesh = new THREE.Mesh(myGeometry, material.clone());
-                    mesh._shape = shapes[Math.abs(y % 2)];
-                    mesh.position.x = x * radius * 2;
-                    mesh.position.y = y * radius * 1.5;
-                    mesh.position.z = sheet.b;
-
-                    mesh.setHeight = function (h) {
-                        this.geometry = new THREE.ExtrudeGeometry(this._shape, {
-                            amount: h,
-                            curveSegments: 0,
-                            steps: 1,
-                            bevelEnabled: false
-                        });
-                    };
-                    mesh.h = sheet.h;
-                    mesh.setHeight(mesh.h);
-                    mesh.castShadow = true;
-                    mesh.receiveShadow = true;
-                    this._scene.add(mesh);
-                }
+                };
+                mesh.h = sheet.h * 10;
+                mesh.position.z = sheet.b * 10;
+                mesh.setHeight(mesh.h);
+                mesh.castShadow = true;
+                mesh.receiveShadow = true;
+                this._scene.add(mesh);
             }
         };
 
