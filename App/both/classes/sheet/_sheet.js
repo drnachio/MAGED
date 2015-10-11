@@ -28,4 +28,8 @@ MAGED.Classes.Sheet = class Sheet extends MAGED.Classes.GameObject {
         super(obj);
     };
 
+    get height(){ return this.h; };
+    
+    set height(val){ Cell.update(this._id, {$set: {h: val}}); };
+
 };

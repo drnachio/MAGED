@@ -68,6 +68,7 @@ MAGED.Classes.MapView = class MapView {
                         steps: 1,
                         bevelEnabled: false
                     });
+                    this.sheet.height = h;
                 };
                 mesh.h = sheet.h * 10;
                 mesh.position.z = cellH * 10;
@@ -76,6 +77,7 @@ MAGED.Classes.MapView = class MapView {
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
                 this._scene.add(mesh);
+                mesh.sheet = sheet;
             }
         };
 
