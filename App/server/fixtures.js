@@ -118,20 +118,24 @@ let addSheets = function(cArray, sheets){
                 type = cArray[Math.floor(Math.random() * cArray.length)].name;
             }
         }
-        sheets.push(MAGED.Classes[type].createNewObject({dynamic: Math.random() > 0.5, h: Math.round(Math.random()*10), b: 0}));
+        sheets.push({class: MAGED.Classes[type], obj:{dynamic: Math.random() > 0.5, h: Math.round(Math.random()*10), b: 0, _class: type}});
     }
     //order by rarity
     sheets.sort(function(a,b){
-        return a.constructor.rarity() - b.constructor.rarity();
+        return a.class.rarity() - b.class.rarity();
     });
+    let res = [];
     for(let i = 0; i < sheets.length; i++){
         let b = 0;
+        let temp =sheets[i].obj;
         if(i != 0) {
             let prevSheet = sheets[i - 1];
-            b = prevSheet.b + prevSheet.h;
+            b = prevSheet.obj.b + prevSheet.obj.h;
         }
-        sheets[i].b = b;
+        temp.b = b;
+        res.push(temp);
     }
+    return res;
 };
 
 if(MAGED.Collections.GameObjects.find().count() === 0){
@@ -153,10 +157,10 @@ if(MAGED.Collections.GameObjects.find().count() === 0){
             let sheetsC2 = [];
             let sheetsC3 = [];
             let sheetsC4 = [];
-            addSheets(cArray, sheetsC1);
-            addSheets(cArray, sheetsC2);
-            addSheets(cArray, sheetsC3);
-            addSheets(cArray, sheetsC4);
+            sheetsC1 = addSheets(cArray, sheetsC1);
+            sheetsC2 = addSheets(cArray, sheetsC2);
+            sheetsC3 = addSheets(cArray, sheetsC3);
+            sheetsC4 = addSheets(cArray, sheetsC4);
 
             cellC1.addSheet(sheetsC1);
             cellC2.addSheet(sheetsC2);

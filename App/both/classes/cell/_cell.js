@@ -26,6 +26,10 @@ MAGED.Classes.Cell = class Cell extends MAGED.Classes.GameObject {
 
     constructor(obj){
         super(obj);
+        this.stack = [];
+        this._stack.forEach(function(obj){
+            this.stack.push(new MAGED.Classes[obj._class](obj));
+        });
     };
 
     get x(){ return this._x; };
@@ -40,37 +44,24 @@ MAGED.Classes.Cell = class Cell extends MAGED.Classes.GameObject {
     get h(){ return this._h; };
     set h(val){ Cell.update(this._id, {$set: {_h: val}}); };
 
-    get stack(){
-        let stackGameObjArray = [];
-        for(let i = 0; i < this._stack.length; i++){
-            stackGameObjArray.push(new MAGED.Classes.Sheet(MAGED.Collections.Sheets.findOne({_id: this._stack[i]})));
-        }
-        return stackGameObjArray;
-    };
     set stack(val) {
         if(!_.isArray(val)){
             val = [val];
         }
         for(let i = 0; i < val.length; i++){
             let temp = val[i];
-            if(_.isObject(temp)){
+            if(temp instanceof MAGED.Classes.Sheet){
                 val[i] = temp._id;
             }
         }
         Cell.update(this._id, {$set:{_stack: val}});
     };
 
-    addSheet(sheetsIds, position){
-        if(!_.isArray(sheetsIds)){
-            sheetsIds = [sheetsIds];
+    addSheet(sheets, position){
+        if(!_.isArray(sheets)){
+            sheets = [sheets];
         }
-        for(let i = 0; i < sheetsIds.length; i++) {
-            sheetId = sheetsIds[i];
-            if (_.isObject(sheetId)) {
-                sheetsIds[i] = sheetId._id;
-            }
-        }
-        let modifier = { $each: sheetsIds };
+        let modifier = { $each: sheets };
         if(position != null) {
             modifier.$position = position;
         }
@@ -80,12 +71,6 @@ MAGED.Classes.Cell = class Cell extends MAGED.Classes.GameObject {
     removeSheet(sheetsIds){
         if(!_.isArray(sheetsIds)){
             sheetsIds = [sheetsIds];
-        }
-        for(let i = 0; i < sheetsIds.length; i++) {
-            sheetId = sheetsIds[i];
-            if (_.isObject(sheetId)) {
-                sheetsIds[i] = sheetId._id;
-            }
         }
         return Cell.update(this._id, { $pullAll: { _stack: sheetsIds } });
     };
